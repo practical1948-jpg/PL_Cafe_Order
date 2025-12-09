@@ -51,7 +51,8 @@ body {
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
     margin-bottom: 30px;
     animation: fadeIn 0.6s ease 0.1s both;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
 }
 
 .category-link {
@@ -74,6 +75,17 @@ body {
 
 .category-link:active {
     transform: translateY(-1px);
+}
+
+/* 스크롤바 숨기기 (webkit 브라우저) */
+.category-nav::-webkit-scrollbar {
+    display: none;
+}
+
+/* 스크롤바 숨기기 (Firefox) */
+.category-nav {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 /* 주문자 정보 */
