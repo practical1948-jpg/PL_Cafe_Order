@@ -217,14 +217,10 @@ btnOrder.addEventListener('click', async () => {
     };
     
     // Firebase에 저장
-    await saveOrder(order);
+    const orderId = await saveOrder(order);
     
-    // 성공 메시지
-    const itemsList = cart.map(item => `${item.icon} ${item.name} x${item.quantity}`).join('\n');
-    alert(`주문이 완료되었습니다! 💖\n\n${userName}님의 주문:\n${itemsList}\n\n곧 준비해드릴게요!`);
-    
-    // 초기화
-    resetForm();
+    // 주문 상태 페이지로 이동
+    window.location.href = `order-status.html?orderId=${orderId}`;
 });
 
 // 주문 저장 (Firebase)
@@ -232,11 +228,13 @@ async function saveOrder(order) {
     try {
         // Firestore에 주문 저장
         const ordersCollection = collection(db, 'orders');
-        await addDoc(ordersCollection, order);
+        const docRef = await addDoc(ordersCollection, order);
         console.log('주문이 Firebase에 저장되었습니다!');
+        return docRef.id; // 주문 ID 반환
     } catch (error) {
         console.error('주문 저장 실패:', error);
         alert('주문 저장에 실패했습니다. 다시 시도해주세요.');
+        throw error;
     }
 }
 

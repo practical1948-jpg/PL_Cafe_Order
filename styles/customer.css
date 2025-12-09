@@ -40,6 +40,42 @@ body {
     font-size: 1.1em;
 }
 
+/* 카테고리 네비게이션 */
+.category-nav {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    background: white;
+    padding: 15px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    animation: fadeIn 0.6s ease 0.1s both;
+    flex-wrap: wrap;
+}
+
+.category-link {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #ff6b9d 0%, #ffa6c1 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+}
+
+.category-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 107, 157, 0.4);
+    background: linear-gradient(135deg, #ff5a8f 0%, #ff95b3 100%);
+}
+
+.category-link:active {
+    transform: translateY(-1px);
+}
+
 /* 주문자 정보 */
 .user-info {
     background: white;
