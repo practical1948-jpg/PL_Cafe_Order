@@ -140,11 +140,24 @@ body {
     border-radius: 20px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
+    position: relative;
 }
 
 .order-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.order-number-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
 }
 
 .order-header {
@@ -310,6 +323,39 @@ body {
 
 .customer-link a:hover {
     background: rgba(255, 255, 255, 0.3);
+}
+
+/* 피드백 섹션 */
+.order-feedback {
+    background: #fff9e6;
+    border: 2px solid #ffd700;
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: 15px;
+    animation: fadeIn 0.5s ease;
+}
+
+.feedback-header {
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 8px;
+    font-size: 0.95em;
+}
+
+.feedback-rating {
+    font-size: 1.2em;
+    margin-bottom: 8px;
+    color: #ff8c00;
+}
+
+.feedback-comment {
+    color: #555;
+    font-style: italic;
+    line-height: 1.5;
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+    margin-top: 8px;
 }
 
 /* 애니메이션 */

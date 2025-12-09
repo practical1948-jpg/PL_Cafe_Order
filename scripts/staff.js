@@ -81,6 +81,9 @@ function createOrderCard(order) {
     const time = new Date(order.timestamp);
     const timeString = `${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}`;
     
+    // 주문 번호 (ID의 앞 8자리)
+    const orderNumber = order.id.substring(0, 8).toUpperCase();
+    
     let itemsHtml = '';
     order.items.forEach(item => {
         itemsHtml += `
@@ -108,8 +111,22 @@ function createOrderCard(order) {
         `;
     }
     
+    // 피드백 표시
+    let feedbackHtml = '';
+    if (order.feedback) {
+        const stars = '⭐'.repeat(order.feedback.rating);
+        feedbackHtml = `
+            <div class="order-feedback">
+                <div class="feedback-header">💬 고객 피드백</div>
+                <div class="feedback-rating">${stars} (${order.feedback.rating}점)</div>
+                ${order.feedback.comment ? `<div class="feedback-comment">"${order.feedback.comment}"</div>` : ''}
+            </div>
+        `;
+    }
+    
     return `
         <div class="order-card">
+            <div class="order-number-badge">주문번호: ${orderNumber}</div>
             <div class="order-header">
                 <div class="order-info">
                     <h3>${order.userName}</h3>
@@ -126,6 +143,8 @@ function createOrderCard(order) {
             <div class="order-items">
                 ${itemsHtml}
             </div>
+            
+            ${feedbackHtml}
             
             <div class="order-actions">
                 ${actionsHtml}
