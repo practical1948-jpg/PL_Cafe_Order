@@ -92,7 +92,6 @@ function subscribeToOrders() {
                 });
             }
         }
-        }
         
         previousOrderCount = newOrders.filter(o => o.status === 'pending').length;
         allOrders = newOrders;
