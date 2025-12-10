@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PL Cafe ☕</title>
+    <link rel="stylesheet" href="styles/customer.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ff6b9d">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+    <div class="container">
+        <!-- 헤더 -->
+        <header class="header">
+            <h1 class="cafe-name">☕ PL Cafe</h1>
+            <p class="cafe-subtitle">따뜻한 한 잔의 행복</p>
+        </header>
+
+        <!-- 카테고리 바로가기 -->
+        <nav class="category-nav">
+            <a href="#coffee" class="category-link">☕ 커피</a>
+            <a href="#latte" class="category-link">🥛 라떼</a>
+            <a href="#tea" class="category-link">🫖 티</a>
+            <a href="#ade" class="category-link">🍹 에이드</a>
+        </nav>
+
+        <!-- 메뉴판 -->
+        <section class="menu-section">
+            <!-- COFFEE -->
+            <div class="menu-category" id="coffee">
+                <h2 class="section-title">☕ COFFEE</h2>
+                <div class="menu-grid" id="menuGridCoffee">
+                <div class="menu-card" data-menu="아메리카노">
+                    <div class="menu-icon">☕</div>
+                    <h3 class="menu-name">아메리카노</h3>
+                </div>
+
+                <div class="menu-card" data-menu="헤이즐넛 아메리카노">
+                    <div class="menu-icon">🌰</div>
+                    <h3 class="menu-name">헤이즐넛 아메리카노</h3>
+                </div>
+
+                <div class="menu-card" data-menu="아샷추">
+                    <div class="menu-icon">💪</div>
+                    <h3 class="menu-name">아샷추</h3>
+                </div>
+
+                <div class="menu-card" data-menu="카페모카">
+                    <div class="menu-icon">🍫</div>
+                    <h3 class="menu-name">카페모카</h3>
+                </div>
+
+                <div class="menu-card" data-menu="콜드브루">
+                    <div class="menu-icon">🧊</div>
+                    <h3 class="menu-name">콜드브루</h3>
+                </div>
+                </div>
+            </div>
+
+            <!-- LATTE -->
+            <div class="menu-category" id="latte">
+                <h2 class="section-title">🥛 LATTE</h2>
+                <div class="menu-grid" id="menuGridLatte">
+                <div class="menu-card" data-menu="플랫화이트">
+                    <div class="menu-icon">☕</div>
+                    <h3 class="menu-name">플랫화이트</h3>
+                </div>
+
+                <div class="menu-card" data-menu="카페라떼">
+                    <div class="menu-icon">🥛</div>
+                    <h3 class="menu-name">카페라떼</h3>
+                </div>
+
+                <div class="menu-card" data-menu="바닐라라떼">
+                    <div class="menu-icon">🍦</div>
+                    <h3 class="menu-name">바닐라라떼</h3>
+                </div>
+
+                <div class="menu-card" data-menu="헤이즐넛라떼">
+                    <div class="menu-icon">🌰</div>
+                    <h3 class="menu-name">헤이즐넛라떼</h3>
+                </div>
+
+                <div class="menu-card" data-menu="그린티라떼">
+                    <div class="menu-icon">🍵</div>
+                    <h3 class="menu-name">그린티라떼</h3>
+                </div>
+
+                <div class="menu-card" data-menu="초코라떼">
+                    <div class="menu-icon">🍫</div>
+                    <h3 class="menu-name">초코라떼</h3>
+                </div>
+                </div>
+            </div>
+
+            <!-- TEA -->
+            <div class="menu-category" id="tea">
+                <h2 class="section-title">🫖 TEA</h2>
+                <div class="menu-grid" id="menuGridTea">
+                <div class="menu-card" data-menu="캐모마일">
+                    <div class="menu-icon">🌼</div>
+                    <h3 class="menu-name">캐모마일</h3>
+                </div>
+
+                <div class="menu-card" data-menu="얼그레이">
+                    <div class="menu-icon">🫖</div>
+                    <h3 class="menu-name">얼그레이</h3>
+                </div>
+
+                <div class="menu-card" data-menu="루이보스">
+                    <div class="menu-icon">🍂</div>
+                    <h3 class="menu-name">루이보스</h3>
+                </div>
+
+                <div class="menu-card" data-menu="히비스커스">
+                    <div class="menu-icon">🌺</div>
+                    <h3 class="menu-name">히비스커스</h3>
+                </div>
+
+                <div class="menu-card" data-menu="레몬티">
+                    <div class="menu-icon">🍋</div>
+                    <h3 class="menu-name">레몬티</h3>
+                </div>
+
+                <div class="menu-card" data-menu="자몽티">
+                    <div class="menu-icon">🍊</div>
+                    <h3 class="menu-name">자몽티</h3>
+                </div>
+
+                <div class="menu-card" data-menu="오미자티">
+                    <div class="menu-icon">🍒</div>
+                    <h3 class="menu-name">오미자티</h3>
+                </div>
+                </div>
+            </div>
+
+            <!-- ADE -->
+            <div class="menu-category" id="ade">
+                <h2 class="section-title">🍹 ADE</h2>
+                <div class="menu-grid" id="menuGridAde">
+                <div class="menu-card" data-menu="자몽에이드">
+                    <div class="menu-icon">🍊</div>
+                    <h3 class="menu-name">자몽에이드</h3>
+                </div>
+
+                <div class="menu-card" data-menu="레몬에이드">
+                    <div class="menu-icon">🍋</div>
+                    <h3 class="menu-name">레몬에이드</h3>
+                </div>
+
+                <div class="menu-card" data-menu="샤인머스캣 에이드">
+                    <div class="menu-icon">🍇</div>
+                    <h3 class="menu-name">샤인머스캣 에이드</h3>
+                </div>
+
+                <div class="menu-card" data-menu="오미자에이드">
+                    <div class="menu-icon">🍒</div>
+                    <h3 class="menu-name">오미자에이드</h3>
+                </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 장바구니 -->
+        <section class="cart-section">
+            <h2 class="section-title">🛒 주문 내역</h2>
+            <div id="cartItems" class="cart-items">
+                <p class="empty-cart">메뉴를 선택해주세요</p>
+            </div>
+        </section>
+
+        <!-- 주문자 정보 -->
+        <section class="user-info">
+            <div class="input-group">
+                <label for="userName">주문자 이름</label>
+                <input type="text" id="userName" placeholder="이름을 입력해주세요" required>
+            </div>
+            <div class="input-group">
+                <label for="userType">구분</label>
+                <select id="userType">
+                    <option value="교역자">교역자</option>
+                    <option value="봉사자">봉사자</option>
+                    <option value="성도">성도</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- 주문하기 버튼 -->
+        <button class="btn-order" id="btnOrder">주문하기 💖</button>
+    </div>
+
+    <script type="module" src="scripts/customer.js"></script>
+</body>
+</html>
+
