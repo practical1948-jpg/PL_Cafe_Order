@@ -75,6 +75,52 @@ body {
     font-size: 1.1em;
 }
 
+/* 관리 도구 */
+.management-tools {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 30px;
+    animation: fadeIn 0.6s ease 0.3s both;
+    flex-wrap: wrap;
+}
+
+.tool-btn {
+    padding: 12px 24px;
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+}
+
+.tool-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+    background: #667eea;
+    color: white;
+}
+
+.tool-btn.active {
+    background: #667eea;
+    color: white;
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+    animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(102, 126, 234, 0.8);
+    }
+}
+
 /* 섹션 타이틀 */
 .section-title {
     font-size: 1.8em;
@@ -297,6 +343,16 @@ body {
     transform: translateY(-2px);
 }
 
+.btn-hide {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-hide:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
 .btn-action:disabled {
     background: #6c757d;
     cursor: not-allowed;
@@ -356,6 +412,110 @@ body {
     background: white;
     border-radius: 8px;
     margin-top: 8px;
+}
+
+/* 통계 모달 */
+.stats-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+    padding: 20px;
+}
+
+.stats-content {
+    background: white;
+    border-radius: 20px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.stats-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 30px;
+    border-bottom: 2px solid #f0f0f0;
+    position: sticky;
+    top: 0;
+    background: white;
+    border-radius: 20px 20px 0 0;
+}
+
+.stats-header h2 {
+    color: #667eea;
+    font-size: 1.8em;
+    margin: 0;
+}
+
+.btn-close {
+    background: #f0f0f0;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    font-size: 1.5em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-close:hover {
+    background: #e0e0e0;
+    transform: rotate(90deg);
+}
+
+.stats-body {
+    padding: 30px;
+    display: grid;
+    gap: 25px;
+}
+
+.stats-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.stats-section h3 {
+    color: #667eea;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+}
+
+.stat-item {
+    padding: 10px 15px;
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-item strong {
+    color: #667eea;
+}
+
+.stats-summary {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 15px;
+    font-size: 1.3em;
 }
 
 /* 애니메이션 */
