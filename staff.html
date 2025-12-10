@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PL Cafe - 직원 화면</title>
     <link rel="stylesheet" href="styles/staff.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
     <div class="container">
@@ -32,9 +36,7 @@
 
         <!-- 관리 도구 -->
         <section class="management-tools">
-            <button class="tool-btn" id="btnNotification" onclick="toggleNotification()">🔕 알림 꺼짐</button>
             <button class="tool-btn" onclick="showStatistics()">📊 통계 보기</button>
-            <button class="tool-btn" onclick="showHiddenOrders()">👁️ 숨긴 주문 복원</button>
         </section>
 
         <!-- 주문 목록 -->

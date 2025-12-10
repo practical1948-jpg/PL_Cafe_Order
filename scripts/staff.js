@@ -10,13 +10,12 @@ const filterButtons = document.querySelectorAll('.filter-btn');
 
 let currentFilter = 'all';
 let allOrders = []; // 모든 주문 데이터 저장
-let hiddenOrderIds = JSON.parse(localStorage.getItem('hiddenOrders') || '[]'); // 숨긴 주문 목록
 let previousOrderCount = 0; // 이전 주문 개수
-let notificationEnabled = localStorage.getItem('notificationEnabled') === 'true'; // 알림 설정
 let audioContext = null; // 소리 재생용
 
 // 페이지 로드 시
 initializeNotification();
+registerServiceWorker();
 subscribeToOrders();
 
 // 필터 버튼 이벤트
@@ -29,18 +28,39 @@ filterButtons.forEach(btn => {
     });
 });
 
-// 알림 초기화
+// Service Worker 등록
+async function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        try {
+            const registration = await navigator.serviceWorker.register('/service-worker.js');
+            console.log('Service Worker 등록 성공:', registration);
+        } catch (error) {
+            console.log('Service Worker 등록 실패:', error);
+        }
+    }
+}
+
+// 알림 초기화 (자동 활성화)
 async function initializeNotification() {
-    // 알림 권한 요청
+    // 알림 권한 자동 요청
     if ('Notification' in window && Notification.permission === 'default') {
         const permission = await Notification.requestPermission();
         if (permission === 'granted') {
-            console.log('알림 권한이 허용되었습니다.');
+            console.log('✅ 알림이 활성화되었습니다!');
+            showWelcomeNotification();
         }
+    } else if (Notification.permission === 'granted') {
+        console.log('✅ 알림이 이미 활성화되어 있습니다.');
     }
-    
-    // 알림 버튼 상태 업데이트
-    updateNotificationButton();
+}
+
+// 환영 알림
+function showWelcomeNotification() {
+    new Notification('🎉 PL Cafe 직원 화면', {
+        body: '알림이 활성화되었습니다!\n새 주문이 들어오면 알려드릴게요.',
+        icon: '☕',
+        tag: 'welcome'
+    });
 }
 
 // Firebase 실시간 주문 구독
@@ -65,15 +85,16 @@ function subscribeToOrders() {
                 !allOrders.find(o => o.id === order.id)
             );
             
-            if (newPendingOrders.length > 0 && notificationEnabled) {
+            if (newPendingOrders.length > 0) {
                 newPendingOrders.forEach(order => {
                     showNotification(order);
                     playNotificationSound();
                 });
             }
         }
+        }
         
-        previousOrderCount = newOrders.length;
+        previousOrderCount = newOrders.filter(o => o.status === 'pending').length;
         allOrders = newOrders;
         renderOrders();
     }, (error) => {
@@ -170,23 +191,32 @@ function updateNotificationButton() {
     }
 }
 
-// 주문 목록 렌더링
+// 오늘 날짜 체크
+function isToday(dateString) {
+    const orderDate = new Date(dateString);
+    const today = new Date();
+    return orderDate.getDate() === today.getDate() &&
+           orderDate.getMonth() === today.getMonth() &&
+           orderDate.getFullYear() === today.getFullYear();
+}
+
+// 주문 목록 렌더링 (오늘 것만)
 function renderOrders() {
-    // 숨긴 주문 제외
-    const visibleOrders = allOrders.filter(order => !hiddenOrderIds.includes(order.id));
+    // 오늘 주문만 필터링
+    const todayOrders = allOrders.filter(order => isToday(order.timestamp));
     
-    // 통계 업데이트 (숨긴 주문 포함)
-    updateStats(visibleOrders);
+    // 통계 업데이트
+    updateStats(todayOrders);
     
-    // 필터링
-    let filteredOrders = visibleOrders;
+    // 상태별 필터링
+    let filteredOrders = todayOrders;
     if (currentFilter !== 'all') {
-        filteredOrders = visibleOrders.filter(order => order.status === currentFilter);
+        filteredOrders = todayOrders.filter(order => order.status === currentFilter);
     }
     
     // 화면 렌더링
     if (filteredOrders.length === 0) {
-        ordersListContainer.innerHTML = '<p class="empty-orders">주문이 없습니다</p>';
+        ordersListContainer.innerHTML = '<p class="empty-orders">오늘 주문이 없습니다</p>';
         return;
     }
     
@@ -230,24 +260,11 @@ function createOrderCard(order) {
             <button class="btn-action btn-cancel" onclick="cancelOrder('${order.id}')">
                 취소
             </button>
-            <button class="btn-action btn-hide" onclick="hideOrder('${order.id}')">
-                숨기기
-            </button>
         `;
     } else if (order.status === 'preparing') {
         actionsHtml = `
             <button class="btn-action btn-complete" onclick="updateOrderStatus('${order.id}', 'completed')">
                 완료
-            </button>
-            <button class="btn-action btn-hide" onclick="hideOrder('${order.id}')">
-                숨기기
-            </button>
-        `;
-    } else {
-        // 완료된 주문
-        actionsHtml = `
-            <button class="btn-action btn-hide" onclick="hideOrder('${order.id}')">
-                숨기기
             </button>
         `;
     }
@@ -335,35 +352,9 @@ function updateStats(orders) {
     completedCountElement.textContent = completed;
 }
 
-// 주문 숨기기 (프론트엔드만)
-function hideOrder(orderId) {
-    if (!confirm('이 주문을 목록에서 숨기시겠습니까?\n(Firebase에서는 삭제되지 않습니다)')) {
-        return;
-    }
-    
-    hiddenOrderIds.push(orderId);
-    localStorage.setItem('hiddenOrders', JSON.stringify(hiddenOrderIds));
-    renderOrders();
-}
-
-// 숨긴 주문 복원
-function showHiddenOrders() {
-    if (hiddenOrderIds.length === 0) {
-        alert('숨긴 주문이 없습니다.');
-        return;
-    }
-    
-    if (confirm(`숨긴 주문 ${hiddenOrderIds.length}개를 모두 복원하시겠습니까?`)) {
-        hiddenOrderIds = [];
-        localStorage.setItem('hiddenOrders', JSON.stringify(hiddenOrderIds));
-        renderOrders();
-        alert('숨긴 주문이 모두 복원되었습니다.');
-    }
-}
-
-// 통계 보기
+// 통계 보기 (전체 기록)
 function showStatistics() {
-    const stats = calculateStatistics(allOrders);
+    const stats = calculateStatistics(allOrders); // 전체 주문 기록
     displayStatisticsModal(stats);
 }
 
@@ -480,9 +471,6 @@ function closeStatsModal(event) {
 // 전역 함수로 등록 (HTML onclick에서 사용)
 window.updateOrderStatus = updateOrderStatus;
 window.cancelOrder = cancelOrder;
-window.hideOrder = hideOrder;
-window.showHiddenOrders = showHiddenOrders;
 window.showStatistics = showStatistics;
 window.closeStatsModal = closeStatsModal;
-window.toggleNotification = toggleNotification;
 
