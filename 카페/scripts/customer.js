@@ -15,14 +15,6 @@ const userNameInput = document.getElementById('userName');
 const userTypeSelect = document.getElementById('userType');
 const cartSection = document.querySelector('.cart-section');
 
-// 모달 요소
-const tempModal = document.getElementById('tempModal');
-const modalIcon = document.getElementById('modalIcon');
-const modalMenu = document.getElementById('modalMenu');
-const btnHot = document.getElementById('btnHot');
-const btnIce = document.getElementById('btnIce');
-const btnCloseModal = document.getElementById('btnCloseModal');
-
 // 메뉴 카드 클릭 이벤트
 menuCards.forEach(card => {
     card.addEventListener('click', (e) => {
@@ -43,42 +35,67 @@ menuCards.forEach(card => {
 
 // 핫/아이스 모달 열기
 function openTempModal(menuName, menuIcon) {
-    modalIcon.textContent = menuIcon;
-    modalMenu.textContent = menuName;
-    tempModal.style.display = 'flex';
-    document.body.style.overflow = 'hidden'; // 스크롤 방지
+    const tempModal = document.getElementById('tempModal');
+    const modalIcon = document.getElementById('modalIcon');
+    const modalMenu = document.getElementById('modalMenu');
+    
+    if (tempModal && modalIcon && modalMenu) {
+        modalIcon.textContent = menuIcon;
+        modalMenu.textContent = menuName;
+        tempModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 // 핫/아이스 모달 닫기
 function closeTempModal() {
-    tempModal.style.display = 'none';
-    document.body.style.overflow = 'auto';
+    const tempModal = document.getElementById('tempModal');
+    if (tempModal) {
+        tempModal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
     currentSelection = null;
 }
 
-// HOT 버튼 클릭
-btnHot.addEventListener('click', () => {
-    if (currentSelection) {
-        addToCart(currentSelection.name, currentSelection.icon, 'HOT', currentSelection.card);
-        closeTempModal();
+// 모달 버튼 이벤트 (페이지 로드 후)
+document.addEventListener('DOMContentLoaded', () => {
+    const btnHot = document.getElementById('btnHot');
+    const btnIce = document.getElementById('btnIce');
+    const btnCloseModal = document.getElementById('btnCloseModal');
+    const tempModal = document.getElementById('tempModal');
+    
+    // HOT 버튼 클릭
+    if (btnHot) {
+        btnHot.addEventListener('click', () => {
+            if (currentSelection) {
+                addToCart(currentSelection.name, currentSelection.icon, 'HOT', currentSelection.card);
+                closeTempModal();
+            }
+        });
     }
-});
-
-// ICE 버튼 클릭
-btnIce.addEventListener('click', () => {
-    if (currentSelection) {
-        addToCart(currentSelection.name, currentSelection.icon, 'ICE', currentSelection.card);
-        closeTempModal();
+    
+    // ICE 버튼 클릭
+    if (btnIce) {
+        btnIce.addEventListener('click', () => {
+            if (currentSelection) {
+                addToCart(currentSelection.name, currentSelection.icon, 'ICE', currentSelection.card);
+                closeTempModal();
+            }
+        });
     }
-});
-
-// 취소 버튼 클릭
-btnCloseModal.addEventListener('click', closeTempModal);
-
-// 모달 배경 클릭 시 닫기
-tempModal.addEventListener('click', (e) => {
-    if (e.target === tempModal) {
-        closeTempModal();
+    
+    // 취소 버튼 클릭
+    if (btnCloseModal) {
+        btnCloseModal.addEventListener('click', closeTempModal);
+    }
+    
+    // 모달 배경 클릭 시 닫기
+    if (tempModal) {
+        tempModal.addEventListener('click', (e) => {
+            if (e.target === tempModal) {
+                closeTempModal();
+            }
+        });
     }
 });
 
@@ -308,3 +325,8 @@ function resetForm() {
     userTypeSelect.value = '교역자';
     updateCart();
 }
+
+// 전역 함수로 등록 (HTML onclick에서 사용)
+window.increaseQuantity = increaseQuantity;
+window.decreaseQuantity = decreaseQuantity;
+window.removeFromCart = removeFromCart;
