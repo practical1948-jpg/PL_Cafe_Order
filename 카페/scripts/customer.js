@@ -2,16 +2,26 @@
 import { db, collection, addDoc } from './firebase-config.js';
 
 // 장바구니 상태 관리
-let cart = []; // { name, price, quantity, icon }
+let cart = []; // { name, quantity, icon, temperature }
+
+// 현재 선택 중인 메뉴 정보
+let currentSelection = null;
 
 // DOM 요소
 const menuCards = document.querySelectorAll('.menu-card');
 const cartItemsContainer = document.getElementById('cartItems');
-const totalPriceElement = document.getElementById('totalPrice');
 const btnOrder = document.getElementById('btnOrder');
 const userNameInput = document.getElementById('userName');
 const userTypeSelect = document.getElementById('userType');
 const cartSection = document.querySelector('.cart-section');
+
+// 모달 요소
+const tempModal = document.getElementById('tempModal');
+const modalIcon = document.getElementById('modalIcon');
+const modalMenu = document.getElementById('modalMenu');
+const btnHot = document.getElementById('btnHot');
+const btnIce = document.getElementById('btnIce');
+const btnCloseModal = document.getElementById('btnCloseModal');
 
 // 메뉴 카드 클릭 이벤트
 menuCards.forEach(card => {
@@ -19,15 +29,63 @@ menuCards.forEach(card => {
         const menuName = card.dataset.menu;
         const menuIcon = card.querySelector('.menu-icon').textContent;
         
-        // 장바구니에 추가 (중복 가능)
-        addToCart(menuName, menuIcon, card);
+        // 현재 선택 정보 저장
+        currentSelection = {
+            name: menuName,
+            icon: menuIcon,
+            card: card
+        };
+        
+        // 모달 열기
+        openTempModal(menuName, menuIcon);
     });
 });
 
+// 핫/아이스 모달 열기
+function openTempModal(menuName, menuIcon) {
+    modalIcon.textContent = menuIcon;
+    modalMenu.textContent = menuName;
+    tempModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // 스크롤 방지
+}
+
+// 핫/아이스 모달 닫기
+function closeTempModal() {
+    tempModal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+    currentSelection = null;
+}
+
+// HOT 버튼 클릭
+btnHot.addEventListener('click', () => {
+    if (currentSelection) {
+        addToCart(currentSelection.name, currentSelection.icon, 'HOT', currentSelection.card);
+        closeTempModal();
+    }
+});
+
+// ICE 버튼 클릭
+btnIce.addEventListener('click', () => {
+    if (currentSelection) {
+        addToCart(currentSelection.name, currentSelection.icon, 'ICE', currentSelection.card);
+        closeTempModal();
+    }
+});
+
+// 취소 버튼 클릭
+btnCloseModal.addEventListener('click', closeTempModal);
+
+// 모달 배경 클릭 시 닫기
+tempModal.addEventListener('click', (e) => {
+    if (e.target === tempModal) {
+        closeTempModal();
+    }
+});
+
 // 장바구니에 추가
-function addToCart(menuName, menuIcon, cardElement) {
-    // 기존 아이템 찾기
-    const existingItem = cart.find(item => item.name === menuName);
+function addToCart(menuName, menuIcon, temperature, cardElement) {
+    // 기존 아이템 찾기 (같은 메뉴 + 같은 온도)
+    const existingItem = cart.find(item => item.name === menuName && item.temperature === temperature);
     
     if (existingItem) {
         // 수량 증가
@@ -37,7 +95,8 @@ function addToCart(menuName, menuIcon, cardElement) {
         cart.push({
             name: menuName,
             quantity: 1,
-            icon: menuIcon
+            icon: menuIcon,
+            temperature: temperature
         });
     }
     
@@ -143,18 +202,24 @@ function updateCart() {
     
     let html = '';
     
-    cart.forEach(item => {
+    cart.forEach((item, index) => {
+        const tempIcon = item.temperature === 'HOT' ? '🔥' : '🧊';
+        const tempClass = item.temperature === 'HOT' ? 'temp-hot' : 'temp-ice';
+        
         html += `
             <div class="cart-item">
                 <div class="cart-item-info">
-                    <div class="cart-item-name">${item.icon} ${item.name}</div>
+                    <div class="cart-item-name">
+                        ${item.icon} ${item.name}
+                        <span class="temp-badge ${tempClass}">${tempIcon} ${item.temperature}</span>
+                    </div>
                     <div class="cart-item-controls">
-                        <button class="btn-quantity" onclick="decreaseQuantity('${item.name}')">-</button>
+                        <button class="btn-quantity" onclick="decreaseQuantity(${index})">-</button>
                         <span class="cart-item-quantity">${item.quantity}</span>
-                        <button class="btn-quantity" onclick="increaseQuantity('${item.name}')">+</button>
+                        <button class="btn-quantity" onclick="increaseQuantity(${index})">+</button>
                     </div>
                 </div>
-                <button class="btn-remove" onclick="removeFromCart('${item.name}')">삭제</button>
+                <button class="btn-remove" onclick="removeFromCart(${index})">삭제</button>
             </div>
         `;
     });
@@ -163,31 +228,29 @@ function updateCart() {
 }
 
 // 수량 증가
-function increaseQuantity(menuName) {
-    const item = cart.find(item => item.name === menuName);
-    if (item) {
-        item.quantity++;
+function increaseQuantity(index) {
+    if (cart[index]) {
+        cart[index].quantity++;
         updateCart();
     }
 }
 
 // 수량 감소
-function decreaseQuantity(menuName) {
-    const item = cart.find(item => item.name === menuName);
-    if (item) {
-        if (item.quantity > 1) {
-            item.quantity--;
+function decreaseQuantity(index) {
+    if (cart[index]) {
+        if (cart[index].quantity > 1) {
+            cart[index].quantity--;
             updateCart();
         } else {
             // 수량이 1일 때 감소하면 삭제
-            removeFromCart(menuName);
+            removeFromCart(index);
         }
     }
 }
 
 // 장바구니에서 항목 제거
-function removeFromCart(menuName) {
-    cart = cart.filter(item => item.name !== menuName);
+function removeFromCart(index) {
+    cart.splice(index, 1);
     updateCart();
 }
 

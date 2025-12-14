@@ -466,6 +466,163 @@ body {
     }
 }
 
+/* 핫/아이스 선택 모달 */
+.temp-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    animation: fadeIn 0.2s ease;
+}
+
+.temp-modal-content {
+    background: white;
+    border-radius: 30px;
+    padding: 2.5rem;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: scaleIn 0.3s ease;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.temp-modal-title {
+    text-align: center;
+    color: #667eea;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+}
+
+.temp-modal-info {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 15px;
+}
+
+.temp-modal-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.temp-modal-menu {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.temp-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.temp-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 2rem 1rem;
+    border: 3px solid transparent;
+    border-radius: 20px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.hot-btn {
+    border-color: #ff6b6b;
+    color: #ff6b6b;
+}
+
+.hot-btn:hover {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+    color: white;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+}
+
+.ice-btn {
+    border-color: #4ecdc4;
+    color: #4ecdc4;
+}
+
+.ice-btn:hover {
+    background: linear-gradient(135deg, #4ecdc4 0%, #44a3a0 100%);
+    color: white;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(78, 205, 196, 0.4);
+}
+
+.temp-icon {
+    font-size: 2.5rem;
+}
+
+.temp-text {
+    font-size: 1.2rem;
+}
+
+.temp-close-btn {
+    width: 100%;
+    padding: 1rem;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 15px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.temp-close-btn:hover {
+    background: #e0e0e0;
+    color: #333;
+}
+
+/* 장바구니 온도 뱃지 */
+.temp-badge {
+    display: inline-block;
+    padding: 0.3rem 0.7rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin-left: 0.5rem;
+}
+
+.temp-hot {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+    color: white;
+}
+
+.temp-ice {
+    background: linear-gradient(135deg, #4ecdc4 0%, #44a3a0 100%);
+    color: white;
+}
+
 /* 반응형 */
 @media (max-width: 600px) {
     .cafe-name {

@@ -191,6 +191,28 @@
         <button class="btn-order" id="btnOrder">주문하기 💖</button>
     </div>
 
+    <!-- 핫/아이스 선택 모달 -->
+    <div id="tempModal" class="temp-modal" style="display: none;">
+        <div class="temp-modal-content">
+            <h3 class="temp-modal-title">온도를 선택해주세요</h3>
+            <div class="temp-modal-info">
+                <span class="temp-modal-icon" id="modalIcon">☕</span>
+                <span class="temp-modal-menu" id="modalMenu">아메리카노</span>
+            </div>
+            <div class="temp-buttons">
+                <button class="temp-btn hot-btn" id="btnHot">
+                    <span class="temp-icon">🔥</span>
+                    <span class="temp-text">HOT</span>
+                </button>
+                <button class="temp-btn ice-btn" id="btnIce">
+                    <span class="temp-icon">🧊</span>
+                    <span class="temp-text">ICE</span>
+                </button>
+            </div>
+            <button class="temp-close-btn" id="btnCloseModal">취소</button>
+        </div>
+    </div>
+
     <script type="module" src="scripts/customer.js"></script>
 </body>
 </html>

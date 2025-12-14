@@ -243,9 +243,15 @@ function createOrderCard(order) {
     
     let itemsHtml = '';
     order.items.forEach(item => {
+        const tempIcon = item.temperature === 'HOT' ? '🔥' : '🧊';
+        const tempClass = item.temperature === 'HOT' ? 'temp-hot' : 'temp-ice';
+        
         itemsHtml += `
             <div class="order-item">
-                <span class="item-name">${item.icon} ${item.name} x${item.quantity}</span>
+                <span class="item-name">
+                    ${item.icon} ${item.name} x${item.quantity}
+                    <span class="temp-badge ${tempClass}">${tempIcon} ${item.temperature}</span>
+                </span>
             </div>
         `;
     });
